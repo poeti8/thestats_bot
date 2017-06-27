@@ -1,0 +1,33 @@
+{
+  "name": "thestats_bot",
+  "version": "1.0.0",
+  "description": "A Telegram bot for getting channel stats",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poeti8/thestats_bot.git"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "stats",
+    "channel"
+  ],
+  "author": "Pouria Ezzati",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/poeti8/thestats_bot/issues"
+  },
+  "homepage": "https://github.com/poeti8/thestats_bot#readme",
+  "dependencies": {
+    "chart.js": "^2.6.0",
+    "chartjs-node": "^1.4.1",
+    "dotenv": "^4.0.0",
+    "moment": "^2.18.1",
+    "mongoose": "^4.10.6",
+    "telegraf": "^3.7.3"
+  }
+}
