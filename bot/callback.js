@@ -42,13 +42,13 @@ const handleCallback = (ctx) => {
 			case 'daily':
 				const dailyStats = getDataDaily(user.channels[index]);
 				createChart(user.channels[index].id, dailyStats).then(item => {
-					return ctx.replyWithPhoto({ source: item }, { caption: `via @thestats_bot` });
+					return ctx.replyWithPhoto({ source: item });
 				});
 				break;
 			case 'monthly':
 				const monthlyStats = getDataMonthly(user.channels[index]);
 				createChart(user.channels[index].id, monthlyStats).then(item => {
-					return ctx.replyWithPhoto({ source: item }, { caption: `via @thestats_bot` });
+					return ctx.replyWithPhoto({ source: item });
 				});
 				break;
 			default:
