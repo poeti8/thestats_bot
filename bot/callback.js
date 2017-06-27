@@ -47,7 +47,7 @@ const handleCallback = (ctx) => {
 				break;
 			case 'monthly':
 				const monthlyStats = getDataMonthly(user.channels[index]);
-				createChart(user.channels[index], monthlyStats).then(item => {
+				createChart(user.channels[index].id, monthlyStats).then(item => {
 					return ctx.replyWithPhoto({ source: item }, { caption: `via @thestats_bot` });
 				});
 				break;
