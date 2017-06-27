@@ -13,6 +13,7 @@ const getStats = require('./bot/stats');
 
 // connect mongoose to mongodb server
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect(config.mongoURL);
 
 // create Telegraf bot
