@@ -31,7 +31,6 @@ const updateStats = async () => {
 						count
 					});
 					await User.findOneAndUpdate({ userId: user.userId }, user);
-					console.log(users);
 				});
 			});
 		}
@@ -43,8 +42,8 @@ const updateStats = async () => {
 
 setTimeout(() => {
 	updateStats()
-	setInterval(updateStats, 1000 * 60);
-}, moment().set('minute', 23) - moment());
+	setInterval(updateStats, 1000 * 60 * 60 * 24);
+}, moment().set('hour', 24) - moment());
 
 bot.command(['start', 'help'], handleHelp);
 bot.command('add', handleAdd);
