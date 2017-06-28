@@ -12,9 +12,7 @@ Remove channels and their data.
 /stats
 Get stats. 
 
-The data will be updated once in a day (24:00, GMT+1:00)
-    
-Source code on [GitHub](https://github.com/poeti8/thestats_bot).`, {disable_web_page_preview: true}, Markup.keyboard([
+The data will be updated once in a day (24:00, GMT+1:00).`, Markup.keyboard([
         ['📊 stats', '➕ add', '✖️ remove']
     ]).resize().extra()
     );
