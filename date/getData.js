@@ -54,7 +54,6 @@ function getData(channel, type) {
 		}
 		stats = months.map(item => {
 			const [month, year] = item.id.split('-');
-			console.log(item);
 			return {
 				date: year === 'thisYear' ?
 					moment().set('month', month - 1).format('MMM') :

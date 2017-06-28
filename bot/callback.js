@@ -4,12 +4,12 @@ const User = require('../models/user');
 const { getDataDaily, getDataMonthly } = require('../date/getData');
 const createChart = require('../chart/createChart');
 
-const handleCallback = (ctx) => {
+const handleCallback = async (ctx) => {
 	const [type, data] = ctx.update.callback_query.data.split('-');
 	const id = ctx.update.callback_query.from.id;
 
-	User.findOne({ userId: id }, function (err, user) {
-		if (err) throw err;
+	const user = await User.findOne({ userId: id })
+	try {
 		if (!user || user.channels.length < 1) {
 			return ctx.reply('The channel does not exist in your list.');
 		}
@@ -27,12 +27,9 @@ const handleCallback = (ctx) => {
 		switch (type) {
 			case 'remove':
 				user.channels.splice(index, 1);
-				user.save().then(item => {
-					ctx.answerCallbackQuery('Removed successfully!')
-					return ctx.editMessageText(`❌ The channel *${data}* has been removed from your list.`, Extra.markdown());
-				});
-
-				break;
+				await user.save();
+				ctx.answerCallbackQuery('Removed successfully!');
+				return ctx.editMessageText(`❌ The channel *${data}* has been removed from your list.`, Extra.markdown());
 
 			case 'stats':
 				return ctx.editMessageText(`How do you want to get stats?`, Markup.inlineKeyboard([
@@ -41,20 +38,19 @@ const handleCallback = (ctx) => {
 
 			case 'daily':
 				const dailyStats = getDataDaily(user.channels[index]);
-				createChart(user.channels[index].id, dailyStats).then(item => {
-					return ctx.replyWithPhoto({ source: item });
-				});
-				break;
+				const dailyChart = await createChart(user.channels[index].id, dailyStats);
+				return ctx.replyWithPhoto({ source: dailyChart });
 			case 'monthly':
 				const monthlyStats = getDataMonthly(user.channels[index]);
-				createChart(user.channels[index].id, monthlyStats).then(item => {
-					return ctx.replyWithPhoto({ source: item });
-				});
-				break;
+				const monthlyChart = await createChart(user.channels[index].id, monthlyStats);
+				return ctx.replyWithPhoto({ source: monthlyChart });
 			default:
 				return ctx.replyWithMarkdown(`An error occurred. Please report the report and try again.`);
 		}
-	});
+	}
+	catch(e) {
+		console.log(e);
+	}
 }
 
 module.exports = handleCallback;

@@ -1,12 +1,12 @@
 const User = require('../models/user');
 
-const handleAdd = (ctx) => {
-    User.findOne({ userId: ctx.message.from.id }, function (err, user) {
+const handleAdd = async (ctx) => {
+    const user = await User.findOne({ userId: ctx.message.from.id })
+    try {
         if (user) {
             user.state.add = true;
-            user.save().then(item => {
-                return ctx.replyWithMarkdown('Please enter the username of the channel. \n\nFor example *@example*');
-            });;
+            await user.save();
+            return ctx.replyWithMarkdown('Please enter the username of the channel. \n\nFor example *@example*');
         } else {
             const newUser = new User({
                 userId: ctx.message.from.id,
@@ -17,11 +17,14 @@ const handleAdd = (ctx) => {
                 },
                 channels: [],
             });
-            newUser.save().then(item => {
-                return ctx.replyWithMarkdown('Please enter the username of the channel. \n\nFor example *@example*');
-            });
+            await newUser.save();
+            return ctx.replyWithMarkdown('Please enter the username of the channel. \n\nFor example *@example*');
         }
-    });
+    } 
+    catch(e) {
+        console.log(e);
+    }
+    
 }
 
 module.exports = handleAdd;
