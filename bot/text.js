@@ -50,7 +50,7 @@ const handleText = async (ctx) => {
 		return ctx.replyWithMarkdown(`✅ The channel *${ctx.message.text}* has been added to your list. \n\nNow we collect its data once in a day.\n\nUse /stats command to get the stats.`);
 	}
 	catch(err) {
-		console.log(err)
+		return ctx.reply(`The channel does not exist!`);
 	}
 }
 

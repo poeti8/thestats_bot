@@ -19,26 +19,32 @@ mongoose.connect(config.mongoURL);
 // create Telegraf bot
 const bot = new Telegraf(config.botToken);
 
-setTimeout(() => {
-	setInterval(() => {
-		User.find({}, function (err, users) {
-			if (err) throw err;
-			if (users) {
-				users.forEach(user => {
-					user.channels.forEach(channel => {
-						bot.telegram.getChatMembersCount(channel.id).then(count => {
-							channel.stats.push({
-								date: moment().format(),
-								count
-							});
-							User.findOneAndUpdate({ userId: user.userId }, user, function (err, res) { });
-						})
+const updateStats = async () => {
+	const users = await User.find({});
+	try {
+		if (users) {
+			users.forEach(user => {
+				user.channels.forEach(async (channel) => {
+					const count = await bot.telegram.getChatMembersCount(channel.id);
+					channel.stats.push({
+						date: moment().format(),
+						count
 					});
+					await User.findOneAndUpdate({ userId: user.userId }, user);
+					console.log(users);
 				});
-			}
-		})
-	}, 1000 * 60 * 60 * 24);
-}, moment().set('hour', 24) - moment());
+			});
+		}
+	}
+	catch(err) {
+		console.log(err);
+	}
+}
+
+setTimeout(() => {
+	updateStats()
+	setInterval(updateStats, 1000 * 60);
+}, moment().set('minute', 23) - moment());
 
 bot.command(['start', 'help'], handleHelp);
 bot.command('add', handleAdd);
