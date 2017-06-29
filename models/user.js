@@ -12,17 +12,6 @@ const UserSchema = new Schema({
     }    
 });
 
-UserSchema.method('addChannel', function(channel, count) {
-    this.channels.push({
-        id: channel,
-        stats: [{
-            date: moment(),
-            count
-        }]
-    });
-    return this.channels;
-});
-
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
