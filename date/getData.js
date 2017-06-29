@@ -65,7 +65,6 @@ const getData = async (data, type) => {
 			}
 		});
 	}
-	console.log(stats)
 	return stats;
 }
 
