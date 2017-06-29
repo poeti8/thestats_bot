@@ -8,19 +8,14 @@ const handleCallback = async (ctx) => {
 	const [type, data] = ctx.update.callback_query.data.split('-');
 	const id = ctx.update.callback_query.from.id;
 
-	const user = await User.findOne({ userId: id })
+	const user = await User.findOne({ id })
 	try {
 		if (!user || user.channels.length < 1) {
 			return ctx.reply('The channel does not exist in your list.');
 		}
 
-		let index;
-		user.channels.forEach((item, i) => {
-			if (item.id === data) {
-				index = i;
-			}
-		});
-		if (index === undefined) {
+		const index = user.channels.indexOf(data);
+		if (index < 0) {
 			return ctx.reply('The channel does not exist in your list.');
 		}
 
@@ -37,12 +32,14 @@ const handleCallback = async (ctx) => {
 				]).extra());
 
 			case 'daily':
-				const dailyStats = getDataDaily(user.channels[index]);
-				const dailyChart = await createChart(user.channels[index].id, dailyStats);
+				console.log('11111111111')
+				const dailyStats = await getDataDaily(data);
+				const dailyChart = await createChart(data, dailyStats);
 				return ctx.replyWithPhoto({ source: dailyChart });
 			case 'monthly':
-				const monthlyStats = getDataMonthly(user.channels[index]);
-				const monthlyChart = await createChart(user.channels[index].id, monthlyStats);
+				console.log('222222222')
+				const monthlyStats = await getDataMonthly(data);
+				const monthlyChart = await createChart(data, monthlyStats);
 				return ctx.replyWithPhoto({ source: monthlyChart });
 			default:
 				return ctx.replyWithMarkdown(`An error occurred. Please report the report and try again.`);

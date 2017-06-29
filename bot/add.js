@@ -1,7 +1,7 @@
 const User = require('../models/user');
 
 const handleAdd = async (ctx) => {
-    const user = await User.findOne({ userId: ctx.message.from.id })
+    const user = await User.findOne({ id: ctx.message.from.id })
     try {
         if (user) {
             user.state.add = true;
@@ -12,13 +12,13 @@ const handleAdd = async (ctx) => {
             const lastName = ctx.message.from.last_name || '';
 
             const newUser = new User({
-                userId: ctx.message.from.id,
+                id: ctx.message.from.id,
                 name: `${firstName} ${lastName}`,
                 username: ctx.message.from.username,
+                channels: [],
                 state: {
                     add: true
-                },
-                channels: [],
+                }
             });
             await newUser.save();
             return ctx.replyWithMarkdown('Please enter the username of the channel. \n\nFor example *@example*');

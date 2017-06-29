@@ -3,13 +3,13 @@ const moment = require('moment');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    userId: { type: String, required: true },
+    id: { type: String, required: true },
     name: String,
     username: String,
+    channels: Array,
     state: {
         add: false
-    },
-    channels: Array
+    }    
 });
 
 UserSchema.method('addChannel', function(channel, count) {

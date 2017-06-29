@@ -1,7 +1,10 @@
 const moment = require('moment');
+const Channel = require('../models/channel');
 
-function getData(channel, type) {
+const getData = async (data, type) => {
+	const channel = await Channel.findOne({id: data});
 	let stats = channel.stats;
+
 	let statsLength = channel.stats.length;
 
 	if (type === 'day') {
@@ -62,14 +65,15 @@ function getData(channel, type) {
 			}
 		});
 	}
+	console.log(stats)
 	return stats;
 }
 
 module.exports = {
-	getDataDaily(channel) {
-		return getData(channel, 'day');
+	getDataDaily(data) {
+		return getData(data, 'day');
 	},
-	getDataMonthly(channel) {
-		return getData(channel, 'month');
+	getDataMonthly(data) {
+		return getData(data, 'month');
 	}
 }
