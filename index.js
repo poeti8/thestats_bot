@@ -35,8 +35,8 @@ const updateStats = async () => {
 
 setTimeout(() => {
 	updateStats()
-	setInterval(updateStats, 10000);
-}, 1000);
+	setInterval(updateStats, 1000 * 60 * 60 * 24);
+}, moment.set('hour', 24) - moment());
 
 bot.command(['start', 'help'], handleHelp);
 bot.command('add', handleAdd);
@@ -44,6 +44,5 @@ bot.command('remove', handleRemove);
 bot.command('stats', getStats);
 bot.on('callback_query', handleCallback);
 bot.on('text', handleText);
-
 
 bot.startPolling();

@@ -11,7 +11,6 @@ async function getUpdate(bot, channel) {
 		count
 	});
 	await channel.save();
-	console.log('yeah!');
 }
 	
 async function getAllUpdates(bot, channels) {
