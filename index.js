@@ -36,7 +36,7 @@ const updateStats = async () => {
 setTimeout(() => {
 	updateStats()
 	setInterval(updateStats, 1000 * 60 * 60 * 24);
-}, moment.set('hour', 24) - moment());
+}, moment().set('hour', 24) - moment());
 
 bot.command(['start', 'help'], handleHelp);
 bot.command('add', handleAdd);
