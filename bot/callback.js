@@ -32,12 +32,10 @@ const handleCallback = async (ctx) => {
 				]).extra());
 
 			case 'daily':
-				console.log('11111111111')
 				const dailyStats = await getDataDaily(data);
 				const dailyChart = await createChart(data, dailyStats);
 				return ctx.replyWithPhoto({ source: dailyChart });
 			case 'monthly':
-				console.log('222222222')
 				const monthlyStats = await getDataMonthly(data);
 				const monthlyChart = await createChart(data, monthlyStats);
 				return ctx.replyWithPhoto({ source: monthlyChart });
