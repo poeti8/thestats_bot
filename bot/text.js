@@ -22,7 +22,7 @@ const handleText = async (ctx) => {
 		}
 
 		if (user.channels.length >= 3) {
-			state.add = false;
+			user.state.add = false;
 			return ctx.reply(`Sorry, you can't add more than 3 channels. You can remove channels by /remove command.`);
 		}
 

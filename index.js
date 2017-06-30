@@ -3,6 +3,7 @@ const Telegraf = require('telegraf');
 const moment = require('moment');
 const config = require('./config');
 const User = require('./models/user');
+const Channel = require('./models/channel');
 
 const handleHelp = require('./bot/help');
 const handleAdd = require('./bot/add');
@@ -10,6 +11,7 @@ const handleRemove = require('./bot/remove');
 const handleText = require('./bot/text');
 const handleCallback = require('./bot/callback');
 const getStats = require('./bot/stats');
+const getAllUpdates = require('./date/getUpdates');
 
 // connect mongoose to mongodb server
 const mongoose = require('mongoose');
@@ -20,19 +22,10 @@ mongoose.connect(config.mongoURL);
 const bot = new Telegraf(config.botToken);
 
 const updateStats = async () => {
-	const users = await User.find({});
+	const channels = await Channel.find({});
 	try {
-		if (users) {
-			users.forEach(user => {
-				user.channels.forEach(async (channel) => {
-					const count = await bot.telegram.getChatMembersCount(channel.id);
-					channel.stats.push({
-						date: moment().format(),
-						count
-					});
-					await User.findOneAndUpdate({ userId: user.userId }, user);
-				});
-			});
+		if (channels) {
+			getAllUpdates(bot, channels)
 		}
 	}
 	catch(err) {
@@ -42,8 +35,8 @@ const updateStats = async () => {
 
 setTimeout(() => {
 	updateStats()
-	setInterval(updateStats, 1000 * 60 * 60 * 24);
-}, moment().set('hour', 24) - moment());
+	setInterval(updateStats, 10000);
+}, 1000);
 
 bot.command(['start', 'help'], handleHelp);
 bot.command('add', handleAdd);
